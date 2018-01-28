@@ -102,19 +102,16 @@ document.addEventListener("DOMContentLoaded", function(event){
 		  		ticker.destroy();
 		  		rocket.destroy();
 		  		fire.destroy();
+
+		  		setTimeout(() => {
+	  				drawRocket(platform);
+		  		}, 1200);
 		  	}
 		});
 		ticker.start();
 		sound.rate(1.2);
 		sound.play();
 
-		sound.on('end', () => {
-			platform
-	  			.getChildByName('button')
-	  			.setTexture(PIXI.loader.resources['runGreen'].texture);
-
-	  		drawRocket(platform);
-		})
 	}
 
 	function drawRocket(platform) {
@@ -143,15 +140,16 @@ document.addEventListener("DOMContentLoaded", function(event){
         fire.visible = false;
 
         rocket.addChild(fire);
+
+		let startButton = platform.getChildByName('button');
+        startButton.setTexture(PIXI.loader.resources['runGreen'].texture);
+  		startButton.interactive = true;	
 	}
 
 	function drawButtons(platform) {
-		let buttonGreenTexture = PIXI.loader.resources['runGreen'].texture;
 		let buttonRedTexture   = PIXI.loader.resources['runRed'].texture;
 
-		let buttonSprite = new PIXI.Sprite(
-			buttonGreenTexture
-		);
+		let buttonSprite = new PIXI.Sprite();
 
 		buttonSprite.name = 'button';
 
@@ -165,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 		buttonSprite.pointerdown = function () {
 			this.setTexture(buttonRedTexture);
+			this.interactive = false;
 			startRocket(platform);
 		};
 		platform.addChild(buttonSprite);
@@ -182,8 +181,8 @@ document.addEventListener("DOMContentLoaded", function(event){
 			height / 1.3
 		);
 
-		drawRocket(platformSprite);
 		drawButtons(platformSprite);
+		drawRocket(platformSprite);
 
 		app.stage.addChild(platformSprite);
 	}
