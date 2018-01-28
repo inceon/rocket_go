@@ -99,14 +99,22 @@ document.addEventListener("DOMContentLoaded", function(event){
 		  	rocket.speed += 0.1;
 
 		  	if (rocket.position.y + rocket.parent.position.y < 0) {
-		  		ticker.stop();
+		  		ticker.destroy();
 		  		rocket.destroy();
 		  		fire.destroy();
 		  	}
 		});
 		ticker.start();
-		sound.rate(1.1);
+		sound.rate(1.2);
 		sound.play();
+
+		sound.on('end', () => {
+			platform
+	  			.getChildByName('button')
+	  			.setTexture(PIXI.loader.resources['runGreen'].texture);
+
+	  		drawRocket(platform);
+		})
 	}
 
 	function drawRocket(platform) {
@@ -144,6 +152,8 @@ document.addEventListener("DOMContentLoaded", function(event){
 		let buttonSprite = new PIXI.Sprite(
 			buttonGreenTexture
 		);
+
+		buttonSprite.name = 'button';
 
 		buttonSprite.scale.set(0.25)
 		buttonSprite.position.set(
