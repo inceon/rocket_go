@@ -69,26 +69,49 @@ document.addEventListener("DOMContentLoaded", function(event){
 		let grassSprite = new PIXI.extras.TilingSprite(
 			PIXI.loader.resources['grass'].texture, 
 			512, 
-			200
+			512
 		);
 
-		grassSprite.tileScale.set(0.35);
+		grassSprite.tileScale.set(0.45);
 		grassSprite.width = width;
-		grassSprite.position.y = height - grassSprite.height;
+		grassSprite.position.y = height / 1.25;
 
 		app.stage.addChild(grassSprite);
 	}
 
-	function runRocket(platform) {
+	function startRocket(platform) {
+		let rocket = platform.getChildByName('rocket');
+		let fire = rocket.getChildByName('fire');
+		
+		fire.play();
+		fire.visible = true;	
+
+		const ticker = new PIXI.ticker.Ticker();
+		ticker.stop();
+		rocket.speed = 1;
+		ticker.add(() => {
+		  	rocket.position.y -= rocket.speed;
+		  	rocket.speed += 0.1;
+
+		  	if (rocket.position.y + rocket.parent.position.y < 0) {
+		  		ticker.stop();
+		  		rocket.destroy();
+		  		fire.destroy();
+		  	}
+		});
+		ticker.start();
+	}
+
+	function drawRocket(platform) {
 		let rocket = new PIXI.Sprite(PIXI.loader.resources['rocket'].texture);
 
+		rocket.name = 'rocket';
 		rocket.anchor.set(0.5, 1);
 		rocket.position.set(
-			platform.width / 2 - 15,
-			-20
+			18,
+			25
 		);
 		platform.addChild(rocket);
-
 
 		let fireTextures = [];
 		for(let i = 1; i <= 50; i++) {
@@ -96,14 +119,15 @@ document.addEventListener("DOMContentLoaded", function(event){
          	fireTextures.push(texture);
 		}
 
-        var explosion = new PIXI.extras.AnimatedSprite(fireTextures);
+        var fire = new PIXI.extras.AnimatedSprite(fireTextures);
 
-        explosion.anchor.set(0.5, 0.75);
-        explosion.rotation = 3.1;
-        explosion.scale.set(0.8);
-        explosion.gotoAndPlay(Math.random() * 27);
-        rocket.addChild(explosion);
-	   
+        fire.name = 'fire';
+        fire.anchor.set(0.5, 0.75);
+        fire.rotation = 3.1;
+        fire.scale.set(0.76);
+        fire.visible = false;
+
+        rocket.addChild(fire);
 	}
 
 	function drawButtons(platform) {
@@ -116,21 +140,16 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 		buttonSprite.scale.set(0.25)
 		buttonSprite.position.set(
-			134,
+			0,
 			42
 		);
 		buttonSprite.interactive = true;
 		buttonSprite.buttonMode  = true;
 
-		runRocket(platform);
 		buttonSprite.pointerdown = function () {
 			this.setTexture(buttonRedTexture);
+			startRocket(platform);
 		};
-
-		buttonSprite.pointerup = function () {
-			this.setTexture(buttonGreenTexture);
-		};
-
 		platform.addChild(buttonSprite);
 	}
 
@@ -140,11 +159,13 @@ document.addEventListener("DOMContentLoaded", function(event){
 			platformTexture
 		);
 
+		platformSprite.anchor.x = 0.4;
 		platformSprite.position.set(
-			width / 2 - platformTexture.width / 2,
-			420
+			width / 2 - 20,
+			height / 1.3
 		);
 
+		drawRocket(platformSprite);
 		drawButtons(platformSprite);
 
 		app.stage.addChild(platformSprite);
