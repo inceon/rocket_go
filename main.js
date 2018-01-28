@@ -13,6 +13,11 @@ document.addEventListener("DOMContentLoaded", function(event){
 	  }
 	);
 
+	var sound = new Howl({
+	  src: ['audio/rocket_launch.wav'],
+	  volume: 0.5
+	});
+
 	window.app = app;
 
 	app.renderer.backgroundColor = 0x81c9f9;
@@ -100,6 +105,8 @@ document.addEventListener("DOMContentLoaded", function(event){
 		  	}
 		});
 		ticker.start();
+		sound.rate(1.1);
+		sound.play();
 	}
 
 	function drawRocket(platform) {
