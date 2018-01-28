@@ -24,13 +24,14 @@ document.addEventListener("DOMContentLoaded", function(event){
 	main.appendChild(app.view);
 
 	PIXI.loader
-	  .add('cat'	   , 'img/mini_squish_siamese_7_design.png')
-	  .add('grass'     , 'img/grass.png')
-	  .add('platform'  , 'img/plataforma.png')
-	  .add('clouds'    , 'img/clouds.svg')
-	  .add('rocket'    , 'img/rocket.png')
-	  .add('runGreen'  , 'img/buttons/Levelgreen-min.png')
-	  .add('runRed'    , 'img/buttons/Levelreoundred-min.png')
+	  .add('cat'	     , 'img/mini_squish_siamese_7_design.png')
+	  .add('grass'       , 'img/grass.png')
+	  .add('platform'    , 'img/plataforma.png')
+	  .add('clouds'      , 'img/clouds.svg')
+	  .add('rocket'      , 'img/rocket.png')
+	  .add('runGreen'    , 'img/buttons/Levelgreen-min.png')
+	  .add('runRed'      , 'img/buttons/Levelreoundred-min.png')
+	  .add('fireSprites' , 'img/fire/fire.json')
 	  .load(setup);
 
 	function drawClouds() {
@@ -84,9 +85,25 @@ document.addEventListener("DOMContentLoaded", function(event){
 		rocket.anchor.set(0.5, 1);
 		rocket.position.set(
 			platform.width / 2 - 15,
-			10
+			-20
 		);
 		platform.addChild(rocket);
+
+
+		let fireTextures = [];
+		for(let i = 1; i <= 50; i++) {
+			let texture = PIXI.Texture.fromFrame('fire1_ ' + i + '.png');
+         	fireTextures.push(texture);
+		}
+
+        var explosion = new PIXI.extras.AnimatedSprite(fireTextures);
+
+        explosion.anchor.set(0.5, 0.75);
+        explosion.rotation = 3.1;
+        explosion.scale.set(0.8);
+        explosion.gotoAndPlay(Math.random() * 27);
+        rocket.addChild(explosion);
+	   
 	}
 
 	function drawButtons(platform) {
