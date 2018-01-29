@@ -1,0 +1,38 @@
+{
+  "name": "pixi_first",
+  "version": "1.0.0",
+  "description": "Simple game on PIXI.js framework",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "webpack-dev-server --inline --content-base dist/",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inceon/rocket_go.git"
+  },
+  "keywords": [
+    "pixi",
+    "game",
+    "rocket"
+  ],
+  "author": "Sergey Okhrymenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inceon/rocket_go/issues"
+  },
+  "homepage": "https://github.com/inceon/rocket_go#readme",
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "html-webpack-plugin": "^2.26.0",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "howler": "^2.0.8",
+    "pixi.js": "^4.7.0"
+  }
+}

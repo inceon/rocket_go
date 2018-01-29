@@ -1,3 +1,7 @@
+import * as PIXI from "pixi.js";
+import { Howl } from 'howler'
+import {randomInt} from "./helpers";
+
 document.addEventListener("DOMContentLoaded", function(event){
 	
 	let main = document.getElementById('main');
@@ -14,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 	);
 
 	var sound = new Howl({
-	  src: ['audio/rocket_launch.wav'],
+	  src: ['assets/audio/rocket_launch.wav'],
 	  volume: 0.5
 	});
 
@@ -29,14 +33,14 @@ document.addEventListener("DOMContentLoaded", function(event){
 	main.appendChild(app.view);
 
 	PIXI.loader
-	  .add('cat'	     , 'img/mini_squish_siamese_7_design.png')
-	  .add('grass'       , 'img/grass.png')
-	  .add('platform'    , 'img/plataforma.png')
-	  .add('clouds'      , 'img/clouds.svg')
-	  .add('rocket'      , 'img/rocket.png')
-	  .add('runGreen'    , 'img/buttons/Levelgreen-min.png')
-	  .add('runRed'      , 'img/buttons/Levelreoundred-min.png')
-	  .add('fireSprites' , 'img/fire/fire.json')
+	  .add('cat'	     , 'assets/img/mini_squish_siamese_7_design.png')
+	  .add('grass'       , 'assets/img/grass.png')
+	  .add('platform'    , 'assets/img/plataforma.png')
+	  .add('clouds'      , 'assets/img/clouds.svg')
+	  .add('rocket'      , 'assets/img/rocket.png')
+	  .add('runGreen'    , 'assets/img/buttons/Levelgreen-min.png')
+	  .add('runRed'      , 'assets/img/buttons/Levelreoundred-min.png')
+	  .add('fireSprites' , 'assets/img/fire/fire.json')
 	  .load(setup);
 
 	function drawClouds() {
