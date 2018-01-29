@@ -4,7 +4,7 @@
   "description": "Simple game on PIXI.js framework",
   "main": "src/main.js",
   "scripts": {
-    "start": "webpack-dev-server --inline --content-base dist/",
+    "start": "webpack-dev-server --inline --content-base dist/ -d",
     "build": "webpack"
   },
   "repository": {

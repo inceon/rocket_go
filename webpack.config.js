@@ -23,7 +23,7 @@ let plugins = [
 ];
 
 if (env === 'development') {
-    plugins.push(new webpack.optimize.UglifyJsPlugin());
+    plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
 }
 
 module.exports = {
