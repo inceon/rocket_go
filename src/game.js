@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js"
+import Rocket from "./rocket";
 
 export default class Game extends PIXI.Container {
     constructor(app) {
@@ -7,18 +8,8 @@ export default class Game extends PIXI.Container {
         this.ticker = new PIXI.ticker.Ticker();
         this.ticker.start();
 
-        this.loadSounds();
         this.loadSprites();
 
-    }
-
-    loadSounds() {
-        this.sounds = [
-            new Howl({
-                src: ['assets/audio/rocket_launch.wav'],
-                volume: 0.5
-            })
-        ];
     }
 
     loadSprites() {
@@ -38,6 +29,14 @@ export default class Game extends PIXI.Container {
         this.drawClouds();
         this.drawGrass();
         this.drawPlatform();
+
+        this.rocket = new Rocket();
+        this.addChild(
+            this.clouds,
+            this.grass,
+            this.platform,
+            this.rocket
+        );
 
         let { app } = this;
 
@@ -93,7 +92,6 @@ export default class Game extends PIXI.Container {
             this.clouds.addChild(tempSprite);
         }
 
-        this.addChild(this.clouds);
     }
 
     drawGrass() {
@@ -107,7 +105,6 @@ export default class Game extends PIXI.Container {
         grass.width = app.renderer.width;
         grass.position.y = app.renderer.height / 1.25;
 
-        this.addChild(grass);
         this.grass = grass;
     }
 
@@ -123,18 +120,17 @@ export default class Game extends PIXI.Container {
             app.renderer.height / 1.3
         );
 
-        this.addChild(platform);
         this.platform = platform;
 
         this.drawButtons();
-        this.drawRocket();
     }
 
     drawButtons() {
-        let startButton = new PIXI.Sprite();
+        let startButton = new PIXI.Sprite(
+            PIXI.loader.resources['runGreen'].texture
+        );
 
         startButton.name = 'button';
-
         startButton.scale.set(0.25);
         startButton.position.set(
             0,
@@ -148,72 +144,11 @@ export default class Game extends PIXI.Container {
 
             this.startButton.setTexture(buttonRedTexture);
             this.startButton.interactive = false;
-            this.startRocket();
+            this.rocket.run();
         }.bind(this);
 
         this.platform.addChild(startButton);
         this.startButton = startButton;
     }
 
-    drawRocket() {
-        let rocket = new PIXI.Sprite(PIXI.loader.resources['rocket'].texture);
-
-        rocket.name = 'rocket';
-        rocket.anchor.set(0.5, 1);
-        rocket.position.set(
-            18,
-            25
-        );
-
-        this.platform.addChild(rocket);
-        this.rocket = rocket;
-
-        let fireTextures = [];
-        for(let i = 1; i <= 50; i++) {
-            let texture = PIXI.Texture.fromFrame('fire1_ ' + i + '.png');
-            fireTextures.push(texture);
-        }
-
-        let fire = new PIXI.extras.AnimatedSprite(fireTextures);
-
-        fire.name = 'fire';
-        fire.anchor.set(0.5, 0.75);
-        fire.rotation = 3.1;
-        fire.scale.set(0.76);
-        fire.visible = false;
-
-        this.rocket.addChild(fire);
-        this.fire = fire;
-
-        this.startButton.setTexture(PIXI.loader.resources['runGreen'].texture);
-        this.startButton.interactive = true;
-    }
-
-    startRocket() {
-        let {rocket, fire} =  this;
-
-        fire.play();
-        fire.visible = true;
-
-        const ticker = new PIXI.ticker.Ticker();
-        ticker.stop();
-        rocket.speed = 1;
-        ticker.add(function () {
-            this.rocket.position.y -= this.rocket.speed;
-            this.rocket.speed += 0.1;
-
-            if (this.rocket.position.y + this.rocket.parent.position.y < 0) {
-                this.rocket.destroy();
-                this.fire.destroy();
-                ticker.destroy();
-
-                setTimeout(() => {
-                    this.drawRocket();
-                }, 1200, this);
-            }
-        }.bind(this));
-        ticker.start();
-        this.sounds[0].rate(1.2);
-        this.sounds[0].play();
-    }
 }
