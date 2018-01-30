@@ -147,7 +147,7 @@ export default class Game extends PIXI.Container {
             let buttonRedTexture = PIXI.loader.resources['runRed'].texture;
 
             this.startButton.setTexture(buttonRedTexture);
-            this.interactive = false;
+            this.startButton.interactive = false;
             this.startRocket();
         }.bind(this);
 
@@ -195,20 +195,24 @@ export default class Game extends PIXI.Container {
         fire.play();
         fire.visible = true;
 
+        const ticker = new PIXI.ticker.Ticker();
+        ticker.stop();
         rocket.speed = 1;
-        this.ticker.add(function () {
+        ticker.add(function () {
             this.rocket.position.y -= this.rocket.speed;
             this.rocket.speed += 0.1;
 
             if (this.rocket.position.y + this.rocket.parent.position.y < 0) {
                 this.rocket.destroy();
-                fire.destroy();
+                this.fire.destroy();
+                ticker.destroy();
 
                 setTimeout(() => {
                     this.drawRocket();
                 }, 1200, this);
             }
         }.bind(this));
+        ticker.start();
         this.sounds[0].rate(1.2);
         this.sounds[0].play();
     }
