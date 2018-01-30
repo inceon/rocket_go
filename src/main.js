@@ -1,10 +1,11 @@
 import * as PIXI from 'pixi.js'
-import { Howl } from 'howler'
 import { randomInt } from './helpers'
 import Game from './game'
 
 document.addEventListener("DOMContentLoaded", function(event){
-	
+
+    PIXI.utils.skipHello();
+
 	let main = document.getElementById('main');
 	let width = window.innerWidth;
 	let height = window.innerHeight;

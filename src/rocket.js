@@ -1,3 +1,5 @@
+import { Howl } from 'howler'
+
 export default class Rocket extends PIXI.Container {
 
     constructor() {
@@ -39,14 +41,10 @@ export default class Rocket extends PIXI.Container {
     run() {
         this.addFire();
 
-        this.ticker.add(function () {
-            this.rocket.position.y -= this.speed;
-            this.speed += this.speedUp;
-
-            if (this.rocket.position.y + this.rocket.height < 0) {
-                this.ticker.stop();
-            }
-        }.bind(this));
+        TweenMax.to(this.rocket, 6, {
+            y: -(this.rocket.position.y + app.renderer.height + this.rocket.height),
+            ease: Power1.easeIn
+        });
 
         this.playSound(0, 1.2);
     }

@@ -34,9 +34,10 @@ export default class Game extends PIXI.Container {
         this.addChild(
             this.clouds,
             this.grass,
-            this.platform,
-            this.rocket
+            this.platform
         );
+
+        this.addChild(this.rocket);
 
         let { app } = this;
 
@@ -46,17 +47,15 @@ export default class Game extends PIXI.Container {
         //Add the cat to the stage
         this.addChild(cat);
 
-        cat.scale.set(0.4);
-        cat.position.set(500, app.renderer.height - cat.height / 1.55);
+        cat.scale.set(0.3);
+        cat.position.set(0, app.renderer.height - cat.height / 1.55);
         cat.revert = 1;
 
-        this.ticker.add(() => {
-            if ( cat.position.x  > app.renderer.width ) {
-                cat.revert = -1;
-            } else if (cat.position.x < 0) {
-                cat.revert = 1;
-            }
-            cat.position.x += cat.revert * 2;
+        TweenMax.to(cat, 12, {
+            x: app.renderer.width - cat.width,
+            repeat: -1,
+            yoyo: true,
+            ease: Power2.easeInOut
         });
     }
 
@@ -145,6 +144,11 @@ export default class Game extends PIXI.Container {
             this.startButton.setTexture(buttonRedTexture);
             this.startButton.interactive = false;
             this.rocket.run();
+
+            TweenMax.to(this, 7, {
+                y: app.renderer.height
+            });
+
         }.bind(this);
 
         this.platform.addChild(startButton);
