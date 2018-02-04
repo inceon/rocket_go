@@ -1,8 +1,8 @@
 export default class Ruby extends PIXI.Container {
-    constructor(x = 0) {
+    constructor(x = 0, speed = 1) {
         super();
 
-        this.speed = 1;
+        this.speed = speed;
         this.ticker = new PIXI.ticker.Ticker();
         this.ticker.start();
 

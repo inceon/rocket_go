@@ -89,9 +89,8 @@ export default class Rocket extends PIXI.Container {
                 delete this.rightTicker;
             }
 
-            TweenMax.to(this.rocket, 0.4, {
-                rotation: 0,
-                ease: Power1.easeIn
+            TweenMax.to(this.rocket, 0.2, {
+                rotation: 0
             });
         }.bind(this));
 

@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js"
 import Rocket from "./rocket";
 import Ruby from "./ruby";
-import randomInt from './helpers';
+import { randomInt, randomFloat } from "./helpers";
 
 export default class Game extends PIXI.Container {
     constructor(app) {
@@ -52,7 +52,8 @@ export default class Game extends PIXI.Container {
 
     createBonus() {
         let tempRuby = new Ruby(
-            randomInt(0, app.renderer.width)
+            randomInt(0, app.renderer.width),
+            randomFloat(1, 3)
         );
         this.bonuses.push(tempRuby);
         this.addChild(tempRuby);
