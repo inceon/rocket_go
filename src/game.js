@@ -20,11 +20,15 @@ export default class Game extends PIXI.Container {
         this.drawGrass();
         this.drawPlatform();
 
-        this.addChild(
+        this.startScreen = new PIXI.Container();
+
+        this.startScreen.addChild(
             this.clouds,
             this.grass,
             this.platform
         );
+
+        this.addChild(this.startScreen);
 
         let { app } = this;
 
@@ -137,24 +141,28 @@ export default class Game extends PIXI.Container {
         startButton.interactive = true;
         startButton.buttonMode  = true;
 
-        startButton.pointerdown = function () {
-            this.startButton.texture = PIXI.loader.resources['runRed'].texture;
-            this.startButton.interactive = false;
-
-            this.rocket = new Rocket(this);
-            this.addChild(this.rocket);
-            this.rocket.run();
-
-            let doubleHeight = app.renderer.height * 2;
-            TweenMax.to(this, 5, {
-                height: doubleHeight,
-                y: app.renderer.height
-            });
-
-        }.bind(this);
+        startButton.pointerdown = this.buttonClick.bind(this);
 
         this.platform.addChild(startButton);
         this.startButton = startButton;
+    }
+
+    buttonClick() {
+        // disable button
+        this.startButton.texture = PIXI.loader.resources['runRed'].texture;
+        this.startButton.interactive = false;
+
+        // create rocket instance
+        this.rocket = new Rocket(this);
+        this.addChild(this.rocket);
+        this.rocket.run();
+
+        // move screen down
+        let doubleHeight = app.renderer.height * 2;
+        TweenMax.to(this.startScreen, 6, {
+            height: doubleHeight,
+            y: app.renderer.height
+        });
     }
 
 }

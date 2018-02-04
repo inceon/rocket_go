@@ -44,7 +44,7 @@ export default class Rocket extends PIXI.Container {
         this.addFire();
 
         TweenMax.to(this.rocket, 4, {
-            y: -10,
+            y: app.renderer.height,
             ease: Power1.easeIn,
             onComplete: this.enableUserControl.bind(this)
         });
