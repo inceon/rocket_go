@@ -29,8 +29,21 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 	main.appendChild(app.view);
 
-	let game = new Game(app);
-
-	app.stage.addChild(game);
-
+    PIXI.loader
+        .add('cat'	     , 'assets/img/mini_squish_siamese_7_design.png')
+        .add('grass'       , 'assets/img/grass.png')
+        .add('platform'    , 'assets/img/plataforma.png')
+        .add('clouds'      , 'assets/img/clouds.svg')
+        .add('rocket'      , 'assets/img/rocket.png')
+        .add('runGreen'    , 'assets/img/buttons/Levelgreen-min.png')
+        .add('runRed'      , 'assets/img/buttons/Levelreoundred-min.png')
+        .add('fireSprites' , 'assets/img/fire/fire.json')
+        .load(() => {
+            let game = new Game(app);
+            console.log('lood');
+            app.stage.addChild(game);
+        })
+        .on('complete', function(e) {
+            console.log('complete', e.progress);
+        });;
 });

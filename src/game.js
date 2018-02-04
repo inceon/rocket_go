@@ -8,21 +8,8 @@ export default class Game extends PIXI.Container {
         this.ticker = new PIXI.ticker.Ticker();
         this.ticker.start();
 
-        this.loadSprites();
+        this.setup();
 
-    }
-
-    loadSprites() {
-        PIXI.loader
-            .add('cat'	     , 'assets/img/mini_squish_siamese_7_design.png')
-            .add('grass'       , 'assets/img/grass.png')
-            .add('platform'    , 'assets/img/plataforma.png')
-            .add('clouds'      , 'assets/img/clouds.svg')
-            .add('rocket'      , 'assets/img/rocket.png')
-            .add('runGreen'    , 'assets/img/buttons/Levelgreen-min.png')
-            .add('runRed'      , 'assets/img/buttons/Levelreoundred-min.png')
-            .add('fireSprites' , 'assets/img/fire/fire.json')
-            .load(this.setup.bind(this));
     }
 
     setup() {
@@ -30,14 +17,16 @@ export default class Game extends PIXI.Container {
         this.drawGrass();
         this.drawPlatform();
 
-        this.rocket = new Rocket();
         this.addChild(
             this.clouds,
             this.grass,
             this.platform
         );
 
-        this.addChild(this.rocket);
+        setTimeout(() => {
+            this.rocket = new Rocket();
+            this.addChild(this.rocket);
+        }, 500);
 
         let { app } = this;
 
@@ -145,7 +134,7 @@ export default class Game extends PIXI.Container {
             this.startButton.interactive = false;
             this.rocket.run();
 
-            TweenMax.to(this, 7, {
+            TweenMax.to(this, 5, {
                 y: app.renderer.height
             });
 

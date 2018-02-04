@@ -27,6 +27,8 @@ export default class Rocket extends PIXI.Container {
 
         this.rocket = rocket;
         this.addChild(rocket);
+
+        this.enableUserControl();
     }
 
     loadSounds() {
@@ -41,12 +43,59 @@ export default class Rocket extends PIXI.Container {
     run() {
         this.addFire();
 
-        TweenMax.to(this.rocket, 6, {
-            y: -(this.rocket.position.y + app.renderer.height + this.rocket.height),
-            ease: Power1.easeIn
+        TweenMax.to(this.rocket, 4, {
+            y: -10,
+            ease: Power1.easeIn,
+            onComplete: this.enableUserControl.bind(this)
         });
 
         this.playSound(0, 1.2);
+    }
+
+    enableUserControl() {
+
+        console.log('enable hotkeys');
+
+        document.addEventListener('keydown', function(event) {
+            if (event.code == 'ArrowLeft' && !this.leftTicker) {
+                this.leftTicker = new PIXI.ticker.Ticker();
+                this.leftTicker.start();
+                this.leftTicker.add(() => {
+                    this.rocket.position.x -= 6;
+                    if (this.rocket.rotation >= -0.5) {
+                        this.rocket.rotation -= 0.05;
+                    }
+                });
+            }
+            if (event.code == 'ArrowRight' && !this.rightTicker) {
+                this.rightTicker = new PIXI.ticker.Ticker();
+                this.rightTicker.start();
+                this.rightTicker.add(() => {
+                    this.rocket.position.x += 6;
+                    if (this.rocket.rotation <= 0.5) {
+                        this.rocket.rotation += 0.05;
+                    }
+                });
+            }
+        }.bind(this));
+
+        document.addEventListener('keyup', function(event) {
+            if (event.code == 'ArrowLeft') {
+                this.leftTicker.destroy();
+                delete this.leftTicker;
+            }
+            if (event.code == 'ArrowRight') {
+                this.rightTicker.destroy();
+                delete this.rightTicker;
+            }
+
+            TweenMax.to(this.rocket, 0.4, {
+                rotation: 0,
+                ease: Power1.easeIn
+            });
+        }.bind(this));
+
+
     }
 
     addFire() {
