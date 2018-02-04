@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function(event){
         .add('platform'    , 'assets/img/plataforma.png')
         .add('clouds'      , 'assets/img/clouds.svg')
         .add('rocket'      , 'assets/img/rocket.png')
+        .add('ruby'	     , 'assets/img/ruby.png')
         .add('runGreen'    , 'assets/img/buttons/Levelgreen-min.png')
         .add('runRed'      , 'assets/img/buttons/Levelreoundred-min.png')
         .add('fireSprites' , 'assets/img/fire/fire.json')

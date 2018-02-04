@@ -1,10 +1,13 @@
 import * as PIXI from "pixi.js"
 import Rocket from "./rocket";
+import Ruby from "./ruby";
+import randomInt from './helpers';
 
 export default class Game extends PIXI.Container {
     constructor(app) {
         super();
         this.app = app;
+        this.bonuses = [];
         this.ticker = new PIXI.ticker.Ticker();
         this.ticker.start();
 
@@ -22,11 +25,6 @@ export default class Game extends PIXI.Container {
             this.grass,
             this.platform
         );
-
-        setTimeout(() => {
-            this.rocket = new Rocket();
-            this.addChild(this.rocket);
-        }, 500);
 
         let { app } = this;
 
@@ -46,6 +44,18 @@ export default class Game extends PIXI.Container {
             yoyo: true,
             ease: Power2.easeInOut
         });
+    }
+
+    createBonus() {
+        let tempRuby = new Ruby(
+            randomInt(0, app.renderer.width)
+        );
+        this.bonuses.push(tempRuby);
+        this.addChild(tempRuby);
+        setTimeout(
+            this.createBonus.bind(this),
+            randomInt(0, 5000)
+        )
     }
 
     drawClouds() {
@@ -128,13 +138,16 @@ export default class Game extends PIXI.Container {
         startButton.buttonMode  = true;
 
         startButton.pointerdown = function () {
-            let buttonRedTexture = PIXI.loader.resources['runRed'].texture;
-
-            this.startButton.setTexture(buttonRedTexture);
+            this.startButton.texture = PIXI.loader.resources['runRed'].texture;
             this.startButton.interactive = false;
+
+            this.rocket = new Rocket(this);
+            this.addChild(this.rocket);
             this.rocket.run();
 
+            let doubleHeight = app.renderer.height * 2;
             TweenMax.to(this, 5, {
+                height: doubleHeight,
                 y: app.renderer.height
             });
 

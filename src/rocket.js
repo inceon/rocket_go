@@ -2,11 +2,12 @@ import { Howl } from 'howler'
 
 export default class Rocket extends PIXI.Container {
 
-    constructor() {
+    constructor(game) {
         super();
 
-        this.speed = 1;
+        this.game = game;
 
+        this.speed = 1;
         this.speedUp = 0.1;
         this.ticker = new PIXI.ticker.Ticker();
         this.ticker.start();
@@ -28,7 +29,6 @@ export default class Rocket extends PIXI.Container {
         this.rocket = rocket;
         this.addChild(rocket);
 
-        this.enableUserControl();
     }
 
     loadSounds() {
@@ -95,6 +95,7 @@ export default class Rocket extends PIXI.Container {
             });
         }.bind(this));
 
+        this.game.createBonus();
 
     }
 
